@@ -2,6 +2,14 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## MERN app for chat application
+
+In this section of the app we have added following things
+
+1. @chakra-ui: A modern ui library which supports extensive react web components and better support of web accessibility.
+2. React-router-dom@5: since react router 6 is still evolving and few crucial supports are not there
+3. axios: A rest API calling library which helps in multiple data fetching scenarios
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -28,14 +36,6 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### MERN app for chat application
-
-In this section of the app we have added following things
-
-1. @chakra-ui: A modern ui library which supports extensive react web components and better support of web accessibility.
-2. React-router-dom@5: since react router 6 is still evolving and few crucial supports are not there
-3. axios: A rest API calling library which helps in multiple data fetching scenarios
 
 ### `npm run eject`
 
