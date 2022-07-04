@@ -29,6 +29,14 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+### MERN app for chat application
+
+In this section of the app we have added following things
+
+1. @chakra-ui: A modern ui library which supports extensive react web components and better support of web accessibility.
+2. React-router-dom@5: since react router 6 is still evolving and few crucial supports are not there
+3. axios: A rest API calling library which helps in multiple data fetching scenarios
+
 ### `npm run eject`
 
 **Note: this is a one-way operation. Once you `eject`, you can't go back!**
