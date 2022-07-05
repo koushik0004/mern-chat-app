@@ -1,5 +1,6 @@
 const dotenv = require('dotenv');
 const express = require('express');
+const colors = require('colors');
 const app = express();
 const connectDB = require('./config/db');
 const { chats } = require('./data/data');
@@ -27,5 +28,5 @@ app.listen(PORT, (err) => {
     console.error(err);
     return;
   }
-  console.log(`Server listen to the port: ${PORT}`);
+  console.log(`Server listen to the port: ${PORT}`.yellow.bold);
 });
