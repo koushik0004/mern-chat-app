@@ -6,12 +6,16 @@ import {
   InputGroup,
   InputRightElement,
   Button,
-  Input
+  Input,
+  useToast
 } from '@chakra-ui/react';
+import axios from 'axios';
 
 export const Signup = () => {
   const [show, setShow] = useState(false);
   const [signupData, setSignupData] = useState({});
+  const [loading, setLoading] = useState(false);
+  const toast = useToast();
   const updateSignupForm = (evt) => {
     setSignupData((signup) => ({
       ...signup,
@@ -19,6 +23,50 @@ export const Signup = () => {
     }));
   };
   const postDetails = (file) => {
+    setLoading(true);
+    if (file === undefined) {
+      toast({
+        title: 'Please select an Image!',
+        description: 'Warning! no image selected',
+        status: 'warning',
+        duration: 9000,
+        isClosable: true,
+        position: 'bottom'
+      });
+      setLoading(false);
+      return;
+    }
+    if (
+      file.type !== 'image/jpeg' ||
+      file.type !== 'image/jpg' ||
+      file.type !== 'image/png'
+    ) {
+      const fileData = new FormData();
+      fileData.append('file', file);
+      fileData.append('upload_preset', 'mern-chats');
+      fileData.append('cloud_name', 'koushik0004');
+      axios
+        .post(
+          'https://api.cloudinary.com/v1_1/koushik0004/image/upload',
+          fileData
+        )
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      toast({
+        title: 'Selected file not an Image!',
+        description: 'Warning! no image selected',
+        status: 'warning',
+        duration: 9000,
+        isClosable: true,
+        position: 'bottom'
+      });
+    }
+    setLoading(false);
     console.log(file);
   };
   const submitHandler = (evt) => {
@@ -90,6 +138,7 @@ export const Signup = () => {
         width="100%"
         style={{ marginTop: 15 }}
         onClick={submitHandler}
+        isLoading={loading}
       >
         Sign Up
       </Button>
