@@ -2,14 +2,17 @@ const dotenv = require('dotenv');
 const express = require('express');
 const colors = require('colors');
 const app = express();
+const userRoutes = require('./routes/userRouter');
 const connectDB = require('./config/db');
 const { chats } = require('./data/data');
 
 dotenv.config();
 connectDB();
 
+app.use(express.json()); // to accept json data
 const PORT = process.env.PORT || 6001;
 
+app.use('/api/user', userRoutes);
 app.get('/', (_, res) => {
   res.send(`API is running!!`);
 });
