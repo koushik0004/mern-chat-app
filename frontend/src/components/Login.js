@@ -3,11 +3,19 @@ import { FormControl, FormLabel } from '@chakra-ui/form-control';
 import { Input, InputGroup, InputRightElement } from '@chakra-ui/input';
 import { VStack } from '@chakra-ui/layout';
 import { useState } from 'react';
+import axios from 'axios';
+import { useToast } from '@chakra-ui/react';
+import { useHistory } from 'react-router-dom';
 
 export const Login = () => {
   const [show, setShow] = useState(false);
-  const [loginForm, setLoginForm] = useState({});
+  const [loginForm, setLoginForm] = useState({
+    loginEmail: '',
+    loginPassword: ''
+  });
   const [loading, setLoading] = useState(false);
+  const toast = useToast();
+  const history = useHistory();
 
   const updateLoginForm = (evt) => {
     console.log(evt.target.value);
@@ -16,13 +24,57 @@ export const Login = () => {
       [evt.target.name]: evt.target.value
     }));
   };
-  const submitHandler = (evt) => {
+  const submitHandler = async (evt) => {
     evt.preventDefault();
     setLoading(true);
-    console.log(loginForm);
-    setTimeout(() => {
+    const { loginEmail, loginPassword } = loginForm;
+    if (!loginEmail || !loginPassword) {
+      toast({
+        title: 'Please Fill all the Fields',
+        status: 'warning',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom'
+      });
       setLoading(false);
-    }, 2000);
+      return;
+    }
+    // console.log(loginForm);
+    try {
+      const config = {
+        headers: {
+          'Content-type': 'application/json'
+        }
+      };
+
+      const { data } = await axios.post(
+        '/api/user/login',
+        { email: loginEmail, password: loginPassword },
+        config
+      );
+      console.log(JSON.stringify(data));
+      toast({
+        title: 'Login Successful',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom'
+      });
+      localStorage.setItem('userInfo', JSON.stringify(data));
+      setLoading(false);
+      history.push('/chats');
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: 'Error Occurred!',
+        description: error.response.data.message,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom'
+      });
+      setLoading(false);
+    }
   };
 
   return (
@@ -68,12 +120,13 @@ export const Login = () => {
           variant="solid"
           colorScheme="red"
           width="100%"
-          onClick={() => {
-            setLoginForm({
-              loginEmail: 'guest@example.com',
-              loginPassword: '123456'
-            });
-          }}
+          onClick={() =>
+            setLoginForm((login) => ({
+              ...login,
+              loginEmail: `${process.env.REACT_APP_GUEST_UER_EMAIL}`,
+              loginPassword: `${process.env.REACT_APP_GUEST_UER_LOGIN}`
+            }))
+          }
         >
           Get Guest User Credentials
         </Button>
